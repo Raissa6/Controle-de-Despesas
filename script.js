@@ -88,15 +88,39 @@ init()
 const upDateLocalStorage = () => {
     localStorage.setItem('transactions', JSON.stringify(transactions));
 }
-form.addEventListener('submit', event => {
-  event.preventDefault()
-  const transName = inputTransactionName.value.trim()
-  const transAmount = inputTransactionAmount.value.trim()
-  if(transName==='' || transAmount === ''){
-   alert('Por gentileza preencha tanto o nome quanto o valor da transação!!!')
-   return
-  }
-  const transaction = { id: 1, name: transName, amount: transAmount }
-})
+
+const generateID = () => Math.round(Math.random() * 1000)
+
+const addToTransactionsArray = (transName, transAmount) => {
+    transactions.push(transaction = {
+        id: generateID(),
+        name: transName,
+        amount: Number(transAmount)
+    })
+}
+
+const cleanInputs = () => {
+    inputTransactionAmount.value = ''
+    inputTransactionName.value = ''
+}
+const handleFormSubmit = event => {
+    event.preventDefault()
+    const transName = inputTransactionName.value.trim()
+    const transAmount = inputTransactionAmount.value.trim()
+    const isSomeInputEmpaty = transName === '' || transAmount === ''
+
+    if (isSomeInputEmpaty) {
+        alert('Por gentileza preencha tanto o nome quanto o valor da transação!!!')
+        return
+    }
+    addToTransactionsArray(transName, transAmount)
+
+    init()
+
+    upDateLocalStorage()
+
+    cleanInputs();
+
+}
 
 form.addEventListener('submit', handleFormSubmit)
